@@ -23,7 +23,7 @@ public class Entity : MonoBehaviour
     }
 
     public void Update() {
-        UpdateCooldowns();
+        //UpdateCooldowns();
     }
 
 
@@ -65,6 +65,11 @@ public class Entity : MonoBehaviour
         {
             competence.ReduceCooldown();
         }
+    }
+
+    public List<Competence> getCompetence()
+    {
+        return _competences;
     }
 
 

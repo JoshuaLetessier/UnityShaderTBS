@@ -7,7 +7,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] Team _playerTeam;
     [SerializeField] Team _enemyTeam;
 
-    [SerializeField] SelectEntity _selectEntity;
+    private SelectEntity _selectEntity;
 
 
     bool _isPlayerTurn;

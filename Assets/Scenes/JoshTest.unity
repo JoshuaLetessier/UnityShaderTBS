@@ -132,7 +132,7 @@ GameObject:
   m_Component:
   - component: {fileID: 101697614}
   m_Layer: 5
-  m_Name: CompetencePanel
+  m_Name: CompetenceMenu
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -154,7 +154,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -487, y: -70}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &293236702
@@ -474,6 +474,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _competenceMenu: {fileID: 101697613}
+  _competenceButtonPrefab: {fileID: 4325929169121901077, guid: 145b5c735daa12e4c96e23412b786a3f,
+    type: 3}
 --- !u!114 &710940250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -523,8 +525,8 @@ Canvas:
   m_GameObject: {fileID: 710940248}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
-  m_Camera: {fileID: 0}
+  m_RenderMode: 1
+  m_Camera: {fileID: 1168550272}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -633,7 +635,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1ef70b3fe877754a8d2899a5e4453d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _selectEntity: {fileID: -4633318797455375347, guid: 81a134e20da0f3045937e17e63240936,
+  _selectEntity: {fileID: 4141319774739297780, guid: 81a134e20da0f3045937e17e63240936,
     type: 3}
   _isSelecting: 0
   _isPlayerTeam: 0
@@ -649,6 +651,7 @@ GameObject:
   - component: {fileID: 1168550273}
   - component: {fileID: 1168550272}
   - component: {fileID: 1168550271}
+  - component: {fileID: 1168550274}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -730,6 +733,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1168550274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1168550270}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
+  m_TaaSettings:
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
 --- !u!1 &1299450768
 GameObject:
   m_ObjectHideFlags: 0
@@ -876,7 +923,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerTeam: {fileID: 1299450770}
   _enemyTeam: {fileID: 293236705}
-  _selectEntity: {fileID: 0}
 --- !u!4 &1637252660
 Transform:
   m_ObjectHideFlags: 0
