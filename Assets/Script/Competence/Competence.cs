@@ -7,22 +7,24 @@ public abstract class Competence : MonoBehaviour
 
     public string Name { get; protected set; } 
     public int Cost { get; protected set; }
+    public int Damage { get; protected set; }
     public int Cooldown { get; protected set; } 
-    public int CurrentCooldown { get; private set; } 
+    public int CurrentCooldown { get; private set; }
 
-    public Competence(string name, int cost, int cooldown)
+    public void Init(string name, int cost, int damage, int cooldown)
     {
         Name = name;
         Cost = cost;
+        Damage = damage;
         Cooldown = cooldown;
         CurrentCooldown = 0;
     }
 
-    public abstract void Apply(Entity caster, Entity target);
+    public abstract void Apply(Entity target);
 
-    public virtual bool IsUsable(Entity caster)
+    public virtual bool IsUsable()
     {
-        return caster._health > 0 && CurrentCooldown <= 0;
+        return CurrentCooldown <= 0;
     }
 
     public void StartCooldown()

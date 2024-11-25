@@ -5,9 +5,11 @@ using UnityEngine;
 public class Entity : MonoBehaviour
 {
 
-    public int _health;
-    public int _maxHealth;
-    List<Competence> _competences;
+    [SerializeField]  public int _health;
+    [SerializeField]  public int _maxHealth;
+    [SerializeField] public int _mana;
+    [SerializeField] public int _maxMana;
+    [SerializeField]  List<Competence> _competences;
 
 
     public Entity(int health, int maxHealth, List<Competence> competences)
@@ -45,6 +47,25 @@ public class Entity : MonoBehaviour
         }
     }
 
+    public void UseMana(int mana)
+    {
+        _mana -= mana;
+        if (_mana <= 0)
+        {
+            _mana = 0;
+        }
+    }
+
+    public void GainMana(int mana)
+    {
+        _mana += mana;
+        if (_mana > _maxMana)
+        {
+            _mana = _maxMana;
+        }
+    }
+
+
     public bool IsDefeated()
     {
         return _health <= 0;
@@ -52,11 +73,8 @@ public class Entity : MonoBehaviour
 
     public void UseCompetence(Competence competence, Entity entityTarget)
     {
-        if (competence.IsUsable(this))
-        {
-            competence.Apply(this, entityTarget);
-            competence.StartCooldown();
-        }
+        competence.Apply(entityTarget);
+        competence.StartCooldown();
     }
 
     public void UpdateCooldowns()
@@ -69,6 +87,7 @@ public class Entity : MonoBehaviour
 
     public List<Competence> getCompetence()
     {
+        Debug.Log("getCompetence");
         return _competences;
     }
 
