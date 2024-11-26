@@ -10,6 +10,8 @@ public class SelectEntity : MonoBehaviour
     public bool _isPlayerTeam = false;
     public bool _isEnemyTeam = false;
 
+    public Entity _entity;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -37,10 +39,14 @@ public class SelectEntity : MonoBehaviour
                 if (hit.collider.CompareTag("PlayerTeam"))
                 {
                     _isPlayerTeam = true;
+                    _isEnemyTeam = false;
+                    _entity = hit.collider.GetComponent<Entity>();
                 }
                 if (hit.collider.CompareTag("EnemyTeam"))
                 {
                     _isEnemyTeam = true;
+                    _isPlayerTeam = false;
+                    _entity = hit.collider.GetComponent<Entity>();
                 }
             }
         }
