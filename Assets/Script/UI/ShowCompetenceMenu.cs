@@ -21,14 +21,13 @@ public class ShowCompetenceMenu : MonoBehaviour
         ShowMenu(_entity);
     }
 
-    //desactiver le isselecting
     public void ShowMenu(Entity entity)
     {
         _entity = entity;
         List<Competence> competences = entity.getCompetence();
         for (int i = 0; i < competences.Count; i++)
         {
-            GameObject competenceButton = Instantiate(_competenceButtonPrefab, _blocCompetence.transform);;
+            GameObject competenceButton = Instantiate(_competenceButtonPrefab, _blocCompetence.transform);
             competenceButton.GetComponentInChildren<Text>().text = competences[i].Name;
 
             GameObject textDamage = Instantiate(_textPrefab, _blocDamage.transform);
