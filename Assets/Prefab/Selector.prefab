@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 449500875905970206}
   - component: {fileID: 7977367379577338589}
+  - component: {fileID: 368404661999351405}
   m_Layer: 0
   m_Name: Selector
   m_TagString: Untagged
@@ -55,6 +56,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &368404661999351405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2082328863125322655}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83767cbe9b27c924da35b5d56e26ff50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2742459081659566570
 GameObject:
   m_ObjectHideFlags: 0
@@ -201,12 +214,12 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 7a15c41b035d2634eab3cab6362ffe6f,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.5
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7a15c41b035d2634eab3cab6362ffe6f,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.5
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7a15c41b035d2634eab3cab6362ffe6f,
         type: 3}
@@ -221,7 +234,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 7a15c41b035d2634eab3cab6362ffe6f,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -90
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7a15c41b035d2634eab3cab6362ffe6f,
         type: 3}

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class NewBehaviourScript : MonoBehaviour
+public class LAB : MonoBehaviour
 {
     [SerializeField] Animator animator;
     [SerializeField] UnityEvent uEvent;

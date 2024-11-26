@@ -9,7 +9,7 @@ public class Entity : MonoBehaviour
     [SerializeField]  public int _maxHealth;
     [SerializeField] public int _mana;
     [SerializeField] public int _maxMana;
-    [SerializeField]  List<Competence> _competences;
+    [SerializeField]  public List<Competence> _competences;
 
 
     public Entity(int health, int maxHealth, List<Competence> competences)
