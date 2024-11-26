@@ -11,89 +11,11 @@ public enum PlayerTeamState
     WAITING
 }
 
-abstract class CharacterAction
-{
-    abstract public void Prepare();
-
-    abstract public void Execute();
-
-    abstract public void Exit();
-}
-class DummyAction : CharacterAction
-{
-    private PlayerTeam _playerTeam;
-    private CombatManager _combatManager;
-    private GameObject _selectedTarget = null;
-
-    public DummyAction(PlayerTeam playerTeam, CombatManager combatManager)
-    {
-        _playerTeam = playerTeam;
-        _combatManager = combatManager;
-    }
-
-    override public void Prepare()
-    {
-        _combatManager.SubscribeOnClickSelect(OnClick);
-        _combatManager.SubscribeOnHoverSelect(OnHover);
-    }
-
-    override public void Execute()
-    {
-        Exit();
-    }
-
-    override public void Exit()
-    {
-        Debug.Log("Dummy Action Executed");
-        _selectedTarget.GetComponentInChildren<MeshRenderer>().material.color = Color.white;
-        _playerTeam.OnActionDone();
-    }
-
-    void OnClick(GameObject clickedObject)
-    {
-        if (clickedObject != null && _combatManager.GetOppositeTeam(_playerTeam).IsTeamMember(clickedObject))
-        {
-            OnCharacterSelected(clickedObject);
-        }
-    }
-    void OnHover(GameObject clickedObject)
-    {
-        if (clickedObject != null && _combatManager.GetOppositeTeam(_playerTeam).IsTeamMember(clickedObject))
-        {
-            OnCharacterHovered(clickedObject);
-        }
-        else if (_selectedTarget != null)
-        {
-            OnHoverExit();
-        }
-    }
-
-    void OnCharacterSelected(GameObject selectedCharacter)
-    {
-        _selectedTarget = selectedCharacter;
-        _combatManager.UnsubscribeOnClickSelect(OnClick);
-        _combatManager.UnsubscribeOnHoverSelect(OnHover);
-        _selectedTarget.GetComponentInChildren<MeshRenderer>().material.color = Color.green;
-        Execute();
-    }
-
-    void OnCharacterHovered(GameObject selectedCharacter)
-    {
-        _selectedTarget = selectedCharacter;
-        _selectedTarget.GetComponentInChildren<MeshRenderer>().material.color = Color.red;
-    }
-
-    void OnHoverExit()
-    {
-        _selectedTarget.GetComponentInChildren<MeshRenderer>().material.color = Color.white;
-        _selectedTarget = null;
-    }
-}
-
 class PlayerTeam : Team
 {
     private PlayerTeamState _state = PlayerTeamState.WAITING;
     private GameObject _selectedCharacter = null;
+    private GameObject _hoveredCharacter = null;
     private CharacterAction _selectedAction = null;
 
     public CombatManager _combatManager;
@@ -126,13 +48,12 @@ class PlayerTeam : Team
 
     void SC_OnHover(GameObject clickedObject)
     {
-        if (clickedObject != null && IsTeamMember(clickedObject))
+        if (clickedObject != null && IsTeamMember(clickedObject) && _hoveredCharacter?.GetInstanceID() != clickedObject.GetInstanceID())
         {
             OnCharacterHovered(clickedObject);
-        } else if(_selectedCharacter != null)
+        } else if(_hoveredCharacter != null && _hoveredCharacter.GetInstanceID() != clickedObject?.GetInstanceID())
         {
-            _selectedCharacter.GetComponentInChildren<MeshRenderer>().material.color = Color.white;
-            _selectedCharacter = null;
+            OnHoverExit();
         }
     }
 
@@ -147,10 +68,16 @@ class PlayerTeam : Team
         _selectedAction.Prepare();
     }
 
-    void OnCharacterHovered(GameObject selectedCharacter)
+    void OnCharacterHovered(GameObject hoveredCharacter)
     {
-        _selectedCharacter = selectedCharacter;
-        _selectedCharacter.GetComponentInChildren<MeshRenderer>().material.color = Color.green;
+        _hoveredCharacter = hoveredCharacter;
+        _hoveredCharacter.GetComponentInChildren<MeshRenderer>().material.color = Color.green;
+    }
+
+    void OnHoverExit()
+    {
+        _hoveredCharacter.GetComponentInChildren<MeshRenderer>().material.color = Color.white;
+        _hoveredCharacter = null;
     }
 
     #endregion SelectingCharacterState
