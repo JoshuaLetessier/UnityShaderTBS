@@ -78,6 +78,7 @@ public class Entity : MonoBehaviour
 
     public void UpdateCooldowns()
     {
+        if (_competences != null) return;
         foreach (var competence in _competences)
         {
             competence.ReduceCooldown();
