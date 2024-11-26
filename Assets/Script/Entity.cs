@@ -28,7 +28,6 @@ public class Entity : MonoBehaviour
         //UpdateCooldowns();
     }
 
-
     public void TakeDamage(int damage)
     {
         _health -= damage;
@@ -87,7 +86,6 @@ public class Entity : MonoBehaviour
 
     public List<Competence> getCompetence()
     {
-        Debug.Log("getCompetence");
         return _competences;
     }
 

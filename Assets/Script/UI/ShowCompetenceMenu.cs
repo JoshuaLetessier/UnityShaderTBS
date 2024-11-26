@@ -50,6 +50,7 @@ public class ShowCompetenceMenu : MonoBehaviour
             }
         }
 
-        _competenceMenu.SetActive(true);
+        if(_competenceMenu.activeSelf == false)
+            _competenceMenu.SetActive(true);
     }
 }
