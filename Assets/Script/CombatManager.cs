@@ -6,9 +6,17 @@ using UnityEngine.InputSystem;
 
 public class CombatManager : MonoBehaviour
 {
+    [Header("Combat Logic")]
+
     [SerializeField] Team _playerTeam;
     [SerializeField] Team _enemyTeam;
     private Team _currentTeam;
+
+    [Header("Combat Zone Parameters")]
+
+    [SerializeField] List<GameObject> _inactiveOnCombatStart;
+    [SerializeField] List<GameObject> _activeOnCombatEnd;
+
 
     private Action<GameObject> _onClickSelectAction;
     private Action<GameObject> _onHoverSelectAction;
@@ -20,22 +28,45 @@ public class CombatManager : MonoBehaviour
 
     public void StartCombat()
     {
-        _playerTeam.Spawn();
-        _enemyTeam.Spawn();
-        _currentTeam = _playerTeam;
-        _currentTeam.OnStartTurn();
+        foreach (GameObject gameObject in _inactiveOnCombatStart)
+        {
+            gameObject.SetActive(false);
+        }
+
+        GetComponent<BoxCollider>().enabled = false;
 
         InputManager inputManager = GameObject.Find("InputManager").GetComponent<InputManager>();
         inputManager.AddOnMouseUpAction(OnClick);
         inputManager.AddOnMouseMoveAction(OnMouveMove);
+
+        _playerTeam.Spawn();
+        _enemyTeam.Spawn();
+        _currentTeam = _playerTeam;
+        _currentTeam.OnStartTurn();
     }
 
-    void Update()
+    public void AbortCombat(bool resetCombatZone = true)
     {
-        _currentTeam.HandleUpdate();
+        if(resetCombatZone)
+        {
+            foreach (GameObject gameObject in _inactiveOnCombatStart)
+            {
+                gameObject.SetActive(true);
+            }
+            GetComponent<BoxCollider>().enabled = true;
+        } 
+        else EndCombat();
     }
 
-    void EndTurn()
+    public void EndCombat()
+    {
+        foreach (GameObject gameObject in _activeOnCombatEnd)
+        {
+            gameObject.SetActive(true);
+        }
+    }
+
+    public void EndTurn()
     {
         _currentTeam.OnEndTurn();
         _currentTeam = GetOppositeTeam(_currentTeam);
@@ -58,47 +89,50 @@ public class CombatManager : MonoBehaviour
 
     public void OnClick()
     {
-        Debug.Log("Click");
         if (_onClickSelectAction == null) return;
-        Debug.Log("Selection Actions Not Empty");
+        
         Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            Debug.Log("Hit");
+            
             GameObject s = hit.collider.gameObject;
             _onClickSelectAction.Invoke(s);
+        } else
+        {
+            _onClickSelectAction.Invoke(null);
         }
     }
 
     public void OnMouveMove()
     {
         if (_onHoverSelectAction == null) return;
-
         Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             GameObject s = hit.collider.gameObject;
             _onHoverSelectAction.Invoke(s);
+        } else
+        {
+            _onHoverSelectAction.Invoke(null);
         }
     }
 
-    public void AddOnClickSelectAction(Action<GameObject> action)
+    public void SubscribeOnClickSelect(Action<GameObject> action)
     {
-        Debug.Log("Loaded new acton");
         _onClickSelectAction += action;
     }
 
-    public void RemoveOnClickSelectAction(Action<GameObject> action)
+    public void UnsubscribeOnClickSelect(Action<GameObject> action)
     {
         _onClickSelectAction -= action;
     }
 
-    public void AddOnHoverSelectAction(Action<GameObject> action)
+    public void SubscribeOnHoverSelect(Action<GameObject> action)
     {
         _onHoverSelectAction += action;
     }
 
-    public void RemoveOnHoverSelectAction(Action<GameObject> action)
+    public void UnsubscribeOnHoverSelect(Action<GameObject> action)
     {
         _onHoverSelectAction -= action;
     }

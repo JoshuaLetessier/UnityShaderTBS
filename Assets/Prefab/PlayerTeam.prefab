@@ -45,10 +45,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe93282ddba2d2341b2ef83f3f7a8ebe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _entities:
+  _entitiesPrefabs:
+  - {fileID: 8427215778164959661, guid: 4df7095eef0be5c4d9bb45952e2e9b87, type: 3}
   - {fileID: 8427215778164959661, guid: 4df7095eef0be5c4d9bb45952e2e9b87, type: 3}
   - {fileID: 8427215778164959661, guid: 4df7095eef0be5c4d9bb45952e2e9b87, type: 3}
   _spawnPointsContainer: {fileID: 5802543999472937961}
+  _combatManager: {fileID: 0}
 --- !u!1 &4804226894161528623
 GameObject:
   m_ObjectHideFlags: 0
