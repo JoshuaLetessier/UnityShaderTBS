@@ -91,9 +91,9 @@ GameObject:
   - component: {fileID: 3369435715449271921}
   - component: {fileID: 3598786003455295574}
   - component: {fileID: 4894431061179748594}
-  - component: {fileID: 3990216289512229426}
+  - component: {fileID: 3455500386730371598}
   m_Layer: 5
-  m_Name: ButtonCompetence
+  m_Name: CharacterActionButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3623443098fc564fb74dbcaf1bd9af5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3990216289512229426
+--- !u!114 &3455500386730371598
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -178,7 +178,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4325929169121901077}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
@@ -210,10 +210,6 @@ MonoBehaviour:
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 3598786003455295574}
-  toggleTransition: 1
-  graphic: {fileID: 0}
-  m_Group: {fileID: 0}
-  onValueChanged:
+  m_OnClick:
     m_PersistentCalls:
       m_Calls: []
-  m_IsOn: 0

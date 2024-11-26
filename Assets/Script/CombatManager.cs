@@ -10,7 +10,11 @@ public class CombatManager : MonoBehaviour
 
     [SerializeField] Team _playerTeam;
     [SerializeField] Team _enemyTeam;
+    [SerializeField] ShowCompetenceMenu _showCompetenceMenu;
+
     private Team _currentTeam;
+
+    public Team CurrentTeam { get => _currentTeam; }
 
     [Header("Combat Zone Parameters")]
 
@@ -20,6 +24,8 @@ public class CombatManager : MonoBehaviour
 
     private Action<GameObject> _onClickSelectAction;
     private Action<GameObject> _onHoverSelectAction;
+
+    public ShowCompetenceMenu ShowCompetenceMenu { get => _showCompetenceMenu; }
 
     private void Start()
     {

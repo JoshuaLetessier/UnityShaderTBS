@@ -2,23 +2,23 @@
 using System;
 using UnityEngine;
 
-public enum PlayerTeamState
+public struct RequestEntityTargetDescriptor
 {
-    SELECTING_CHARACTER,
-    SELECTING_ACTION,
-    PREPARING_ACTION,
-    EXECUTING_ACTION,
-    WAITING
+    public Func<Entity, bool> predicate;
+    public Action<Entity> onTargetFound;
 }
+
 
 class PlayerTeam : Team
 {
-    private PlayerTeamState _state = PlayerTeamState.WAITING;
+    
     private GameObject _selectedCharacter = null;
     private GameObject _hoveredCharacter = null;
     private CharacterAction _selectedAction = null;
 
     public CombatManager _combatManager;
+
+
 
     public override void OnStartTurn()
     {
@@ -32,8 +32,7 @@ class PlayerTeam : Team
         _state = PlayerTeamState.SELECTING_CHARACTER;
         _combatManager.SubscribeOnClickSelect(SC_OnClick);
         _combatManager.SubscribeOnHoverSelect(SC_OnHover);
-        if (_selectedCharacter.TryGetComponent(out Character script))
-            script.ResetSelection();
+        _selectedCharacter.GetComponentInChildren<MeshRenderer>().material.color = Color.white;
         _selectedCharacter = null;
     }
 
@@ -64,28 +63,55 @@ class PlayerTeam : Team
         _state = PlayerTeamState.SELECTING_ACTION;
         _combatManager.UnsubscribeOnClickSelect(SC_OnClick);
         _combatManager.UnsubscribeOnHoverSelect(SC_OnHover);
-        if (_selectedCharacter.TryGetComponent(out Character script))
-            script.ConfirmSelection();
-        _selectedAction = new DummyAction(this, _combatManager);
-        _selectedAction.Prepare();
+        _selectedCharacter.GetComponentInChildren<MeshRenderer>().material.color = Color.red;
+        //_selectedAction = new DummyAction(this, _combatManager);
+        //_selectedAction.Prepare();
+        _combatManager.ShowCompetenceMenu.ShowMenu(_selectedCharacter.GetComponent<Entity>());
     }
 
     void OnCharacterHovered(GameObject hoveredCharacter)
     {
         _hoveredCharacter = hoveredCharacter;
-        if (_hoveredCharacter.TryGetComponent(out Character script))
-            script.Select();
+        _hoveredCharacter.GetComponentInChildren<MeshRenderer>().material.color = Color.green;
     }
 
     void OnHoverExit()
     {
-        if (_hoveredCharacter.TryGetComponent(out Character script))
-            script.ResetSelection();
+        _hoveredCharacter.GetComponentInChildren<MeshRenderer>().material.color = Color.white;
         _hoveredCharacter = null;
     }
 
     #endregion SelectingCharacterState
 
+
+    public override void RequestEntityTarget(RequestEntityTargetDescriptor requestEntityTargetDescriptor)
+    {
+        if(_requestEntityTargetDescriptor != null)
+        RequestEntityTargetDescriptor _requestEntityTargetDescriptor = requestEntityTargetDescriptor;
+
+        Action<GameObject> action = (GameObject selectedGameObject) =>
+        {
+            if(selectedGameObject != null && selectedGameObject.TryGetComponent(out Entity selectedCharacter))
+            {
+                if (predicate(selectedGameObject))
+                {
+                    onTargetFound(selectedCharacter);
+                }
+            }
+                if (predicate(selectedGameObject))
+            {
+                onTargetFound(selectedCharacter.GetComponent<Entity>());
+            }
+        };
+    }
+
+    public void OnSelectedEntityCandidate(Entity selectionCandidate)
+    {
+        if(selectionCandidate != null && _requestPredicate(selectionCandidate))
+        {
+
+        }
+    }
 
     public override void Defeated()
     {

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-abstract class CharacterAction
+public abstract class CharacterAction
 {
     abstract public void Prepare();
 

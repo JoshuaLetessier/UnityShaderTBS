@@ -15,6 +15,8 @@ public class ShowCompetenceMenu : MonoBehaviour
     [SerializeField] GameObject _blocCost;
     [SerializeField] GameObject _blocCooldown;
 
+    [SerializeField] CombatManager _combatManager;
+
     public Entity _entity;
 
 
@@ -22,7 +24,8 @@ public class ShowCompetenceMenu : MonoBehaviour
     public void ShowMenu(Entity entity)
     {
         _entity = entity;
-        List<Competence> competences = entity.getCompetence();
+        List<Competence> competences = entity.GetCompetence();
+        ToggleGroup toggleGroup = _blocCompetence.GetComponent<ToggleGroup>();
         for (int i = 0; i < competences.Count; i++)
         {
             GameObject competenceButton = Instantiate(_competenceButtonPrefab, _blocCompetence.transform);
@@ -37,6 +40,10 @@ public class ShowCompetenceMenu : MonoBehaviour
             GameObject textCooldown = Instantiate(_textPrefab, _blocCooldown.transform);
             textCooldown.GetComponent<Text>().text = "" + competences[i].Cooldown;
 
+
+            toggleGroup.RegisterToggle(competenceButton.GetComponent<Toggle>());
+
+            competenceButton.GetComponent<Toggle>().onValueChanged.AddListener((bool isToggled) => { if(isToggled) entity.SelectCompetence(competences[i]); });
 
             //ajouter un décalge si i > 0
             if(i > 0) {

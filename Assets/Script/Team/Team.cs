@@ -1,11 +1,25 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+public enum PlayerTeamState
+{
+    SELECTING_CHARACTER,
+    SELECTING_ACTION,
+    PREPARING_ACTION,
+    EXECUTING_ACTION,
+    WAITING
+}
+
 
 public abstract class Team : MonoBehaviour
 {
+
+    private PlayerTeamState _state = PlayerTeamState.WAITING;
+
+    public PlayerTeamState State { get => _state; set => _state = value; }
 
     [SerializeField] private List<GameObject> _entitiesPrefabs;
 
@@ -58,4 +72,7 @@ public abstract class Team : MonoBehaviour
         }
         return false;
     }
+
+    public abstract void RequestEntityTarget(Func<Entity, bool> predicate, Action<Entity>onTargetFound);
+
 }

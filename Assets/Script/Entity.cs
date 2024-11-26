@@ -12,6 +12,8 @@ public class Entity : MonoBehaviour
     [SerializeField]  public List<string> _competencesName;
     List<Competence> _competences;
 
+    private Team _team;
+    public Team Team { get => _team; set => _team = value; }
 
     public Entity(int health, int maxHealth, List<Competence> competences)
     {
@@ -76,10 +78,16 @@ public class Entity : MonoBehaviour
         return _health <= 0;
     }
 
-    public void UseCompetence(Competence competence, Entity entityTarget)
+    /*public void UseCompetence(Competence competence, Entity entityTarget)
     {
         competence.Apply(entityTarget);
         competence.StartCooldown();
+    }*/
+
+    public void SelectCompetence(Competence competence)
+    {
+        _team.State = PlayerTeamState.PREPARING_ACTION;
+        competence.Prepare();
     }
 
     public void UpdateCooldowns()
@@ -91,11 +99,15 @@ public class Entity : MonoBehaviour
         }
     }
 
-    public List<Competence> getCompetence()
+    public List<Competence> GetCompetence()
     {
         return _competences;
     }
 
+    public bool IsSameTeam(Entity other)
+    {
+        return _team == other._team;
+    }
 
 
 }

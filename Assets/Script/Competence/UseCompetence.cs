@@ -32,7 +32,7 @@ public class UseCompetence : MonoBehaviour
         {
             if (_toggleList[_index].isOn && _selectEntity._isSelecting)
             {
-                _selectEntity._entity.UseCompetence(_showCompetenceMenu._entity.getCompetence()[_index], _selectEntity._entity);
+                //_selectEntity._entity.UseCompetence(_showCompetenceMenu._entity.getCompetence()[_index], _selectEntity._entity);
                 _toggleList[_index].isOn = false;
             }
         }
@@ -43,7 +43,7 @@ public class UseCompetence : MonoBehaviour
     {
         if(_toggleList.Count > 0 && _selectEntity._isSelecting == false)
         {
-            List<Competence> competences = _showCompetenceMenu._entity.getCompetence();
+            List<Competence> competences = _showCompetenceMenu._entity.GetCompetence();
             for (int i = 0; i < _toggleList.Count; i++)
             {
                 if (DisbaleInteraction(_toggleList[i], competences[i]))
