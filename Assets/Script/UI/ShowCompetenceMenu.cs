@@ -9,17 +9,15 @@ public class ShowCompetenceMenu : MonoBehaviour
     [SerializeField] GameObject _competenceMenu;
     [SerializeField] GameObject _competenceButtonPrefab;
     [SerializeField] GameObject _textPrefab;
-    [SerializeField] public Entity _entity;
 
     [SerializeField] GameObject _blocCompetence;
     [SerializeField] GameObject _blocDamage;
     [SerializeField] GameObject _blocCost;
     [SerializeField] GameObject _blocCooldown;
 
-    private void Start()
-    {
-        ShowMenu(_entity);
-    }
+    public Entity _entity;
+
+
 
     public void ShowMenu(Entity entity)
     {
