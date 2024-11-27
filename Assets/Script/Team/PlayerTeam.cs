@@ -1,90 +1,89 @@
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-public enum PlayerTeamState
-{
-    SELECTING_CHARACTER,
-    SELECTING_ACTION,
-    PREPARING_ACTION,
-    EXECUTING_ACTION,
-    WAITING
-}
+
+
 
 class PlayerTeam : Team
 {
-    private PlayerTeamState _state = PlayerTeamState.WAITING;
-    private GameObject _selectedCharacter = null;
-    private GameObject _hoveredCharacter = null;
-    private CharacterAction _selectedAction = null;
+    
+    private Entity _currentEntity = null;
+    private int _currentEntityIndex;
+    private Entity _hoveredEntity = null;
+    
+    RequestEntityTargetDescriptor _requestEntityTargetDescriptor;
 
-    public CombatManager _combatManager;
-
-    public override void OnStartTurn()
+    public override void OnStartTeamTurn()
     {
         _state = PlayerTeamState.SELECTING_CHARACTER;
-        _combatManager.SubscribeOnClickSelect(SC_OnClick);
-        _combatManager.SubscribeOnHoverSelect(SC_OnHover);
+        _currentEntityIndex = 0;
+        _currentEntity = _entities[_currentEntityIndex];
+        _currentEntity.Select();
+        _combatManager.ShowCompetenceMenu.ShowMenu(_currentEntity);
     }
 
-    public void OnActionDone()
+    void StartNextEntityTurn()
     {
-        _state = PlayerTeamState.SELECTING_CHARACTER;
-        _combatManager.SubscribeOnClickSelect(SC_OnClick);
-        _combatManager.SubscribeOnHoverSelect(SC_OnHover);
-        if (_selectedCharacter.TryGetComponent(out Character script))
-            script.ResetSelection();
-        _selectedCharacter = null;
+        _currentEntity.Deselect();
+        _currentEntityIndex++;
+        _currentEntity = _entities[_currentEntityIndex];
+        _currentEntity.Select();
+        _combatManager.ShowCompetenceMenu.ShowMenu(_currentEntity);
     }
 
-    #region SelectingCharacterState
-
-    void SC_OnClick(GameObject clickedObject)
+    public override void OnEntityTurnDone()
     {
-        if (clickedObject != null && IsTeamMember(clickedObject))
+        _currentEntity.GetComponentInChildren<MeshRenderer>().material.color = Color.white;
+        if(_currentEntityIndex < _entities.Count - 1)
         {
-            OnCharacterSelected(clickedObject);
+            _state = PlayerTeamState.SELECTING_CHARACTER;
+            StartNextEntityTurn();
+        }
+        else
+        {
+            _state = PlayerTeamState.WAITING;
+            _combatManager.EndTeamTurn();
         }
     }
 
-    void SC_OnHover(GameObject clickedObject)
+    public override void RequestEntityTarget(RequestEntityTargetDescriptor requestDescriptor)
     {
-        if (clickedObject != null && IsTeamMember(clickedObject) && _hoveredCharacter?.GetInstanceID() != clickedObject.GetInstanceID())
+        _requestEntityTargetDescriptor = requestDescriptor;
+        _combatManager.SubscribeOnClickSelect(OnSelectedEntityCandidate);
+        _combatManager.SubscribeOnHoverSelect(OnSelectedEntityCandidateHovered);
+    }
+
+    void OnSelectedEntityCandidateHovered(Entity hoveredEntity)
+    {
+        if (_hoveredEntity != hoveredEntity && IsEntityInList(_requestEntityTargetDescriptor.selectableEntities, hoveredEntity))
         {
-            OnCharacterHovered(clickedObject);
-        } else if(_hoveredCharacter != null && _hoveredCharacter.GetInstanceID() != clickedObject?.GetInstanceID())
+            _hoveredEntity = hoveredEntity;
+            _hoveredEntity.HoverSelect();
+        } else if (_hoveredEntity != hoveredEntity)
         {
-            OnHoverExit();
+            _hoveredEntity.Deselect();
+            _hoveredEntity = null;
         }
     }
 
-    void OnCharacterSelected(GameObject selectedCharacter)
+    public void OnSelectedEntityCandidate(Entity selectionCandidate)
     {
-        _selectedCharacter = selectedCharacter;
-        _state = PlayerTeamState.SELECTING_ACTION;
-        _combatManager.UnsubscribeOnClickSelect(SC_OnClick);
-        _combatManager.UnsubscribeOnHoverSelect(SC_OnHover);
-        if (_selectedCharacter.TryGetComponent(out Character script))
-            script.ConfirmSelection();
-        _selectedAction = new DummyAction(this, _combatManager);
-        _selectedAction.Prepare();
+        if (selectionCandidate != null && IsEntityInList(_requestEntityTargetDescriptor.selectableEntities, selectionCandidate))
+        {
+            selectionCandidate.Select();
+            _combatManager.UnsubscribeOnClickSelect(OnSelectedEntityCandidate);
+            _combatManager.UnsubscribeOnHoverSelect(OnSelectedEntityCandidateHovered);
+            _requestEntityTargetDescriptor.onTargetFound(selectionCandidate);
+        }
     }
 
-    void OnCharacterHovered(GameObject hoveredCharacter)
+    public bool IsEntityInList(List<Entity> entities, Entity other)
     {
-        _hoveredCharacter = hoveredCharacter;
-        if (_hoveredCharacter.TryGetComponent(out Character script))
-            script.Select();
+        if (entities == null) return false;
+        return entities.Contains(other);
     }
-
-    void OnHoverExit()
-    {
-        if (_hoveredCharacter.TryGetComponent(out Character script))
-            script.ResetSelection();
-        _hoveredCharacter = null;
-    }
-
-    #endregion SelectingCharacterState
 
 
     public override void Defeated()

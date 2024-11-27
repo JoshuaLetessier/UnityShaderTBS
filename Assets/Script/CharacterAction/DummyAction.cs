@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/*
 class DummyAction : CharacterAction
 {
     private PlayerTeam _playerTeam;
@@ -70,4 +70,4 @@ class DummyAction : CharacterAction
         _selectedTarget.GetComponentInChildren<MeshRenderer>().material.color = Color.white;
         _selectedTarget = null;
     }
-}
+}*/

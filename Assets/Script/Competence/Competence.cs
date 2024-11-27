@@ -1,27 +1,23 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public abstract class Competence : ScriptableObject
+public abstract class Competence : EntityAction
 {
-    public string Name { get; protected set; } 
-    public int Cost { get; protected set; }
-    public int Damage { get; protected set; }
-    public int Cooldown { get; protected set; } 
+    protected Entity _entity;
+
+    public Entity Entity { get => _entity; set => _entity = value; }
+
+    public abstract string Name { get; } 
+    public abstract int Cost { get; }
+    public abstract int Damage { get; }
+    public abstract int Cooldown { get; } 
     public int CurrentCooldown { get; private set; }
 
-    public void Init(string name, int cost, int damage, int cooldown)
+    public Competence(Entity entity)
     {
-        Name = name;
-        Cost = cost;
-        Damage = damage;
-        Cooldown = cooldown;
-        CurrentCooldown = 0;
+        _entity = entity;
     }
-
-    public abstract void Apply(Entity target);
 
     public virtual bool IsUsable()
     {

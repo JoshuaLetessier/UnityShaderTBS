@@ -5,33 +5,25 @@ using UnityEngine;
 public class Entity : MonoBehaviour
 {
 
-    [SerializeField]  public int _health;
-    [SerializeField]  public int _maxHealth;
+    [SerializeField] public int _health;
+    [SerializeField] public int _maxHealth;
     [SerializeField] public int _mana;
     [SerializeField] public int _maxMana;
-    [SerializeField]  public List<string> _competencesName;
-    List<Competence> _competences;
+    [SerializeField] List<Competence> _competences;
 
+    private Team _team;
+    public Team Team { get => _team; set => _team = value; }
 
-    public Entity(int health, int maxHealth, List<Competence> competences)
-    {
-        this._health = health;
-        this._maxHealth = maxHealth;
-        this._competences = competences;
-    }
+    public List<Competence> Competences { get => _competences; }
 
     public void Start()
     {
-        _competences = new List<Competence>();
-        foreach (string str in _competencesName)
-        {
-            _competences.Add(AbilityMapper.map[str]());
-        }
         _health = _maxHealth;
-    }
 
-    public void Update() {
-        //UpdateCooldowns();
+        foreach (Competence competence in _competences)
+        {
+            competence.Entity = this;
+        }
     }
 
     public void TakeDamage(int damage)
@@ -76,10 +68,32 @@ public class Entity : MonoBehaviour
         return _health <= 0;
     }
 
-    public void UseCompetence(Competence competence, Entity entityTarget)
+
+
+    public void SelectAction(Competence competence)
     {
-        competence.Apply(entityTarget);
-        competence.StartCooldown();
+        _team.State = PlayerTeamState.PREPARING_ACTION;
+        competence.Prepare();
+    }
+
+    public void Select()
+    {
+        GetComponentInChildren<MeshRenderer>().material.color = Color.green;
+    }
+
+    public void HoverSelect()
+    {
+        GetComponentInChildren<MeshRenderer>().material.color = Color.cyan;
+    }
+
+    public void Deselect()
+    {
+        GetComponentInChildren<MeshRenderer>().material.color = Color.white;
+    }
+
+    public void OnActionDone()
+    {
+        _team.OnEntityTurnDone();
     }
 
     public void UpdateCooldowns()
@@ -91,11 +105,8 @@ public class Entity : MonoBehaviour
         }
     }
 
-    public List<Competence> getCompetence()
+    public bool IsSameTeam(Entity other)
     {
-        return _competences;
+        return _team == other._team;
     }
-
-
-
 }

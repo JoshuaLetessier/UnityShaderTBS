@@ -10,7 +10,11 @@ public class CombatManager : MonoBehaviour
 
     [SerializeField] Team _playerTeam;
     [SerializeField] Team _enemyTeam;
+    [SerializeField] ShowCompetenceMenu _showCompetenceMenu;
+
     private Team _currentTeam;
+
+    public Team CurrentTeam { get => _currentTeam; }
 
     [Header("Combat Zone Parameters")]
 
@@ -18,8 +22,10 @@ public class CombatManager : MonoBehaviour
     [SerializeField] List<GameObject> _activeOnCombatEnd;
 
 
-    private Action<GameObject> _onClickSelectAction;
-    private Action<GameObject> _onHoverSelectAction;
+    private Action<Entity> _onClickSelectAction;
+    private Action<Entity> _onHoverSelectAction;
+
+    public ShowCompetenceMenu ShowCompetenceMenu { get => _showCompetenceMenu; }
 
     private void Start()
     {
@@ -42,7 +48,7 @@ public class CombatManager : MonoBehaviour
         _playerTeam.Spawn();
         _enemyTeam.Spawn();
         _currentTeam = _playerTeam;
-        _currentTeam.OnStartTurn();
+        _currentTeam.OnStartTeamTurn();
     }
 
     public void AbortCombat(bool resetCombatZone = true)
@@ -66,11 +72,11 @@ public class CombatManager : MonoBehaviour
         }
     }
 
-    public void EndTurn()
+    public void EndTeamTurn()
     {
         _currentTeam.OnEndTurn();
         _currentTeam = GetOppositeTeam(_currentTeam);
-        _currentTeam.OnStartTurn();
+        _currentTeam.OnStartTeamTurn();
     }
 
     public Team GetOppositeTeam(Team team)
@@ -96,7 +102,7 @@ public class CombatManager : MonoBehaviour
         {
             
             GameObject s = hit.collider.gameObject;
-            _onClickSelectAction.Invoke(s);
+            _onClickSelectAction.Invoke(s.GetComponent<Entity>());
         } else
         {
             _onClickSelectAction.Invoke(null);
@@ -110,29 +116,29 @@ public class CombatManager : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             GameObject s = hit.collider.gameObject;
-            _onHoverSelectAction.Invoke(s);
+            _onHoverSelectAction.Invoke(s.GetComponent<Entity>());
         } else
         {
             _onHoverSelectAction.Invoke(null);
         }
     }
 
-    public void SubscribeOnClickSelect(Action<GameObject> action)
+    public void SubscribeOnClickSelect(Action<Entity> action)
     {
         _onClickSelectAction += action;
     }
 
-    public void UnsubscribeOnClickSelect(Action<GameObject> action)
+    public void UnsubscribeOnClickSelect(Action<Entity> action)
     {
         _onClickSelectAction -= action;
     }
 
-    public void SubscribeOnHoverSelect(Action<GameObject> action)
+    public void SubscribeOnHoverSelect(Action<Entity> action)
     {
         _onHoverSelectAction += action;
     }
 
-    public void UnsubscribeOnHoverSelect(Action<GameObject> action)
+    public void UnsubscribeOnHoverSelect(Action<Entity> action)
     {
         _onHoverSelectAction -= action;
     }
