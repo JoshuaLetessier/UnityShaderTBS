@@ -12,6 +12,7 @@ public class Entity : MonoBehaviour
     [SerializeField] GameObject _heart;
     [SerializeField] Material _heartMaterial;
     [SerializeField] List<Competence> _competences;
+    [SerializeField] SelectionIndicator _selectionIndicator;
 
     private Team _team;
     public Team Team { get => _team; set => _team = value; }
@@ -85,17 +86,17 @@ public class Entity : MonoBehaviour
 
     public void Select()
     {
-        GetComponentInChildren<MeshRenderer>().material.color = Color.green;
+        _selectionIndicator.SetOpacity(1);
     }
 
     public void HoverSelect()
     {
-        GetComponentInChildren<MeshRenderer>().material.color = Color.cyan;
+        _selectionIndicator.SetOpacity(0.7f);
     }
 
     public void Deselect()
     {
-        GetComponentInChildren<MeshRenderer>().material.color = Color.white;
+        _selectionIndicator.SetOpacity(0);
     }
 
     public void OnActionDone()

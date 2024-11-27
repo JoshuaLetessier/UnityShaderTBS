@@ -26,7 +26,6 @@ class PlayerTeam : Team
 
     void StartNextEntityTurn()
     {
-        _currentEntity.Deselect();
         _currentEntityIndex++;
         _currentEntity = _entities[_currentEntityIndex];
         _currentEntity.Select();
@@ -35,7 +34,7 @@ class PlayerTeam : Team
 
     public override void OnEntityTurnDone()
     {
-        _currentEntity.GetComponentInChildren<MeshRenderer>().material.color = Color.white;
+        _currentEntity.Deselect();
         if(_currentEntityIndex < _entities.Count - 1)
         {
             _state = PlayerTeamState.SELECTING_CHARACTER;
