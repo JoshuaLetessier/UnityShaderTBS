@@ -120,11 +120,11 @@ MonoBehaviour:
     type: 3}
   _textPrefab: {fileID: 876035257499789095, guid: ddc5d4463759af140bfd48435712ffd3,
     type: 3}
-  _entity: {fileID: 0}
   _blocCompetence: {fileID: 3855090028901046695}
   _blocDamage: {fileID: 5228254279538830690}
   _blocCost: {fileID: 7579628888177299349}
   _blocCooldown: {fileID: 8298789689766720726}
+  _entity: {fileID: 0}
 --- !u!1 &1030238240581879159
 GameObject:
   m_ObjectHideFlags: 0
@@ -581,6 +581,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2417883682624738561}
+  - component: {fileID: 8947632336767840666}
   m_Layer: 0
   m_Name: CanvasManager
   m_TagString: Untagged
@@ -605,6 +606,18 @@ Transform:
   - {fileID: 1590488563809850177}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!225 &8947632336767840666
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5529232321837145148}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &5965707783414150044
 GameObject:
   m_ObjectHideFlags: 0

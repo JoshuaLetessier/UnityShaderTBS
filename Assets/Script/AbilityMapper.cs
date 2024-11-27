@@ -7,6 +7,6 @@ static class AbilityMapper
 {
     public static Dictionary<string, Func<Competence>> map = new()
     {
-        {"dummy", ()=>{return new CompetenceTest(); } },
+        {"OrbMeteor", ()=>{return new OrbMeteorCompetence(); } },
     };
 }
