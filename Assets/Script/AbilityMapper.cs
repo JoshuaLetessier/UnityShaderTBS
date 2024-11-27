@@ -1,11 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 static class AbilityMapper
 {
-    //static Dictionary<string, Competence> map = new()
-    //{
-    //    {"dummy", new DummyAction()},
-    //};
+    public static Dictionary<string, Func<PlayerTeam, CombatManager, bool>> map = new()
+    {
+        {"dummy", (PlayerTeam playerTeam, CombatManager combatManager)=>{new DummyAction(playerTeam, combatManager); return true; } },
+    };
 }

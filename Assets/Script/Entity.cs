@@ -9,7 +9,8 @@ public class Entity : MonoBehaviour
     [SerializeField]  public int _maxHealth;
     [SerializeField] public int _mana;
     [SerializeField] public int _maxMana;
-    [SerializeField]  public List<Competence> _competences;
+    [SerializeField]  public List<string> _competencesName;
+    List<Competence> _competences;
 
 
     public Entity(int health, int maxHealth, List<Competence> competences)
@@ -21,6 +22,11 @@ public class Entity : MonoBehaviour
 
     public void Start()
     {
+        _competences = new List<Competence>();
+        foreach (string str in _competencesName)
+        {
+            _competences.Add(AbilityMapper.map[str]());
+        }
         _health = _maxHealth;
     }
 
