@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Competence : MonoBehaviour
+[System.Serializable]
+public abstract class Competence : ScriptableObject
 {
-
     public string Name { get; protected set; } 
     public int Cost { get; protected set; }
     public int Damage { get; protected set; }

@@ -32,7 +32,8 @@ class PlayerTeam : Team
         _state = PlayerTeamState.SELECTING_CHARACTER;
         _combatManager.SubscribeOnClickSelect(SC_OnClick);
         _combatManager.SubscribeOnHoverSelect(SC_OnHover);
-        _selectedCharacter.GetComponentInChildren<MeshRenderer>().material.color = Color.white;
+        if (_selectedCharacter.TryGetComponent(out Character script))
+            script.ResetSelection();
         _selectedCharacter = null;
     }
 
@@ -63,7 +64,8 @@ class PlayerTeam : Team
         _state = PlayerTeamState.SELECTING_ACTION;
         _combatManager.UnsubscribeOnClickSelect(SC_OnClick);
         _combatManager.UnsubscribeOnHoverSelect(SC_OnHover);
-        _selectedCharacter.GetComponentInChildren<MeshRenderer>().material.color = Color.red;
+        if (_selectedCharacter.TryGetComponent(out Character script))
+            script.ConfirmSelection();
         _selectedAction = new DummyAction(this, _combatManager);
         _selectedAction.Prepare();
     }
@@ -71,12 +73,14 @@ class PlayerTeam : Team
     void OnCharacterHovered(GameObject hoveredCharacter)
     {
         _hoveredCharacter = hoveredCharacter;
-        _hoveredCharacter.GetComponentInChildren<MeshRenderer>().material.color = Color.green;
+        if (_hoveredCharacter.TryGetComponent(out Character script))
+            script.Select();
     }
 
     void OnHoverExit()
     {
-        _hoveredCharacter.GetComponentInChildren<MeshRenderer>().material.color = Color.white;
+        if (_hoveredCharacter.TryGetComponent(out Character script))
+            script.ResetSelection();
         _hoveredCharacter = null;
     }
 

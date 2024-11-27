@@ -46,9 +46,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _entitiesPrefabs:
-  - {fileID: 8427215778164959661, guid: 4df7095eef0be5c4d9bb45952e2e9b87, type: 3}
-  - {fileID: 8427215778164959661, guid: 4df7095eef0be5c4d9bb45952e2e9b87, type: 3}
-  - {fileID: 8427215778164959661, guid: 4df7095eef0be5c4d9bb45952e2e9b87, type: 3}
+  - {fileID: 8487141094640178885, guid: 6f9986d2ee53cbf49b57f4734a6700fa, type: 3}
+  - {fileID: 8487141094640178885, guid: 6f9986d2ee53cbf49b57f4734a6700fa, type: 3}
+  - {fileID: 8487141094640178885, guid: 6f9986d2ee53cbf49b57f4734a6700fa, type: 3}
   _spawnPointsContainer: {fileID: 5802543999472937961}
   _combatManager: {fileID: 0}
 --- !u!1 &4804226894161528623
