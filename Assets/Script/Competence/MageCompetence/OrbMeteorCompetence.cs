@@ -7,11 +7,12 @@ using UnityEngine;
 public class OrbMeteorCompetence : Competence
 {
 
-    [SerializeField] private int _damage;
-    [SerializeField] private int _cost;
-    [SerializeField] private int _cooldown;
+    public override string Name { get => "OrbMeteorCompetence"; }
+    public override int Cost { get => 0; }
+    public override int Damage { get => 10; }
+    public override int Cooldown { get => 0; }
 
-     private GameObject _Orb;
+    private GameObject _Orb;
 
     private List<GameObject> _meteors;
     private List<bool> _isShooting;
@@ -20,17 +21,27 @@ public class OrbMeteorCompetence : Competence
 
     Vector3 _targetPosition;
 
-    private void Start()
+    private Entity _target;
+
+    public OrbMeteorCompetence(Entity entity) : base(entity)
     {
-        Init("OrbMeteor", _cost, _damage, _cooldown);
+        _meteors = new List<GameObject>();
+        _isShooting = new List<bool>();
+        _linkedMB = entity.GetComponent<MonoBehaviour>();
     }
 
-    public override void Apply(Entity target)
+    public override void Prepare()
     {
-        _Orb = Instantiate(Resources.Load("MageCompetences/Orb"), target.transform.position, Quaternion.identity) as GameObject;
+        Team oppositeTeam = _entity.Team.CombatManager.GetOppositeTeam(_entity.Team);
+        _entity.Team.RequestEntityTarget(new RequestEntityTargetDescriptor(oppositeTeam.Entities, OnTargetSelected));
+    }
+
+    public override void Execute()
+    {
+        _Orb = Instantiate(Resources.Load("MageCompetences/Orb"), _target.transform.position, Quaternion.identity) as GameObject;
         CreateMeteor();
-        _targetPosition = target.transform.position;
-        _linkedMB.StartCoroutine(WaitForFall(target));
+        _targetPosition = _target.transform.position;
+        _linkedMB.StartCoroutine(WaitForFall(_target));
     }
 
     private void CreateMeteor()
@@ -75,5 +86,19 @@ public class OrbMeteorCompetence : Competence
             yield return new WaitForSeconds(Random.Range(1, 3));
             MeteorsFall(meteor, target);
         }
+        Exit();
+    }
+
+    public override void Exit()
+    {
+        _target.Deselect();
+        Debug.Log("Dummy Competence Executed");
+        _entity.OnActionDone();
+    }
+
+    public void OnTargetSelected(Entity target)
+    {
+        _target = target;
+        Execute();
     }
 }

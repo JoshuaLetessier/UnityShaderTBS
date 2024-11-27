@@ -44,6 +44,8 @@ GameObject:
   - component: {fileID: 6896500838906398249}
   - component: {fileID: 8815948017626097228}
   - component: {fileID: 5705632429964170772}
+  - component: {fileID: 5513090385528439829}
+  - component: {fileID: 6108100295429391496}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -120,7 +122,31 @@ MonoBehaviour:
   _mana: 0
   _maxMana: 0
   _competences:
-  - {fileID: 0}
+  - {fileID: 6108100295429391496}
+--- !u!114 &5513090385528439829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8487141094640178885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5707580a4910874e89a19adb327fbbf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6108100295429391496
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8487141094640178885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29e5f0588a1e94a4ebf61e38857dd66e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1528217644834012740
 PrefabInstance:
   m_ObjectHideFlags: 0
