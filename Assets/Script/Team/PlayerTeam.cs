@@ -1,117 +1,90 @@
 
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-public struct RequestEntityTargetDescriptor
-{
-    public Func<Entity, bool> predicate;
-    public Action<Entity> onTargetFound;
-}
+
 
 
 class PlayerTeam : Team
 {
     
-    private GameObject _selectedCharacter = null;
-    private GameObject _hoveredCharacter = null;
-    private CharacterAction _selectedAction = null;
+    private Entity _currentEntity = null;
+    private int _currentEntityIndex;
+    private Entity _hoveredEntity = null;
+    
+    RequestEntityTargetDescriptor _requestEntityTargetDescriptor;
 
-    public CombatManager _combatManager;
-
-
-
-    public override void OnStartTurn()
+    public override void OnStartTeamTurn()
     {
         _state = PlayerTeamState.SELECTING_CHARACTER;
-        _combatManager.SubscribeOnClickSelect(SC_OnClick);
-        _combatManager.SubscribeOnHoverSelect(SC_OnHover);
+        _currentEntityIndex = 0;
+        _currentEntity = _entities[_currentEntityIndex];
+        _currentEntity.Select();
+        _combatManager.ShowCompetenceMenu.ShowMenu(_currentEntity);
     }
 
-    public void OnActionDone()
+    void StartNextEntityTurn()
     {
-        _state = PlayerTeamState.SELECTING_CHARACTER;
-        _combatManager.SubscribeOnClickSelect(SC_OnClick);
-        _combatManager.SubscribeOnHoverSelect(SC_OnHover);
-        _selectedCharacter.GetComponentInChildren<MeshRenderer>().material.color = Color.white;
-        _selectedCharacter = null;
+        _currentEntity.Deselect();
+        _currentEntityIndex++;
+        _currentEntity = _entities[_currentEntityIndex];
+        _currentEntity.Select();
+        _combatManager.ShowCompetenceMenu.ShowMenu(_currentEntity);
     }
 
-    #region SelectingCharacterState
-
-    void SC_OnClick(GameObject clickedObject)
+    public override void OnEntityTurnDone()
     {
-        if (clickedObject != null && IsTeamMember(clickedObject))
+        _currentEntity.GetComponentInChildren<MeshRenderer>().material.color = Color.white;
+        if(_currentEntityIndex < _entities.Count - 1)
         {
-            OnCharacterSelected(clickedObject);
+            _state = PlayerTeamState.SELECTING_CHARACTER;
+            StartNextEntityTurn();
+        }
+        else
+        {
+            _state = PlayerTeamState.WAITING;
+            _combatManager.EndTeamTurn();
         }
     }
 
-    void SC_OnHover(GameObject clickedObject)
+    public override void RequestEntityTarget(RequestEntityTargetDescriptor requestDescriptor)
     {
-        if (clickedObject != null && IsTeamMember(clickedObject) && _hoveredCharacter?.GetInstanceID() != clickedObject.GetInstanceID())
+        _requestEntityTargetDescriptor = requestDescriptor;
+        _combatManager.SubscribeOnClickSelect(OnSelectedEntityCandidate);
+        _combatManager.SubscribeOnHoverSelect(OnSelectedEntityCandidateHovered);
+    }
+
+    void OnSelectedEntityCandidateHovered(Entity hoveredEntity)
+    {
+        if (_hoveredEntity != hoveredEntity && IsEntityInList(_requestEntityTargetDescriptor.selectableEntities, hoveredEntity))
         {
-            OnCharacterHovered(clickedObject);
-        } else if(_hoveredCharacter != null && _hoveredCharacter.GetInstanceID() != clickedObject?.GetInstanceID())
+            _hoveredEntity = hoveredEntity;
+            _hoveredEntity.HoverSelect();
+        } else if (_hoveredEntity != hoveredEntity)
         {
-            OnHoverExit();
+            _hoveredEntity.Deselect();
+            _hoveredEntity = null;
         }
-    }
-
-    void OnCharacterSelected(GameObject selectedCharacter)
-    {
-        _selectedCharacter = selectedCharacter;
-        _state = PlayerTeamState.SELECTING_ACTION;
-        _combatManager.UnsubscribeOnClickSelect(SC_OnClick);
-        _combatManager.UnsubscribeOnHoverSelect(SC_OnHover);
-        _selectedCharacter.GetComponentInChildren<MeshRenderer>().material.color = Color.red;
-        //_selectedAction = new DummyAction(this, _combatManager);
-        //_selectedAction.Prepare();
-        _combatManager.ShowCompetenceMenu.ShowMenu(_selectedCharacter.GetComponent<Entity>());
-    }
-
-    void OnCharacterHovered(GameObject hoveredCharacter)
-    {
-        _hoveredCharacter = hoveredCharacter;
-        _hoveredCharacter.GetComponentInChildren<MeshRenderer>().material.color = Color.green;
-    }
-
-    void OnHoverExit()
-    {
-        _hoveredCharacter.GetComponentInChildren<MeshRenderer>().material.color = Color.white;
-        _hoveredCharacter = null;
-    }
-
-    #endregion SelectingCharacterState
-
-
-    public override void RequestEntityTarget(RequestEntityTargetDescriptor requestEntityTargetDescriptor)
-    {
-        if(_requestEntityTargetDescriptor != null)
-        RequestEntityTargetDescriptor _requestEntityTargetDescriptor = requestEntityTargetDescriptor;
-
-        Action<GameObject> action = (GameObject selectedGameObject) =>
-        {
-            if(selectedGameObject != null && selectedGameObject.TryGetComponent(out Entity selectedCharacter))
-            {
-                if (predicate(selectedGameObject))
-                {
-                    onTargetFound(selectedCharacter);
-                }
-            }
-                if (predicate(selectedGameObject))
-            {
-                onTargetFound(selectedCharacter.GetComponent<Entity>());
-            }
-        };
     }
 
     public void OnSelectedEntityCandidate(Entity selectionCandidate)
     {
-        if(selectionCandidate != null && _requestPredicate(selectionCandidate))
+        if (selectionCandidate != null && IsEntityInList(_requestEntityTargetDescriptor.selectableEntities, selectionCandidate))
         {
-
+            selectionCandidate.Select();
+            _combatManager.UnsubscribeOnClickSelect(OnSelectedEntityCandidate);
+            _combatManager.UnsubscribeOnHoverSelect(OnSelectedEntityCandidateHovered);
+            _requestEntityTargetDescriptor.onTargetFound(selectionCandidate);
         }
     }
+
+    public bool IsEntityInList(List<Entity> entities, Entity other)
+    {
+        if (entities == null) return false;
+        return entities.Contains(other);
+    }
+
 
     public override void Defeated()
     {

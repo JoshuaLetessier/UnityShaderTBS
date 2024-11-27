@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DummyCompetence : Competence
+public class DummyCompetenceBis : Competence
 {
     private Entity _target;
 
-    public override string Name { get => "Dummy Competence"; }
+    public override string Name { get => "Dummy Competence Bis"; }
     public override int Cost { get => 0; }
     public override int Damage { get => 10; }
     public override int Cooldown { get => 0; }
 
-    public DummyCompetence(Entity entity) : base(entity) { }
+    public DummyCompetenceBis(Entity entity) : base(entity) { }
 
     public override void Prepare()
     {

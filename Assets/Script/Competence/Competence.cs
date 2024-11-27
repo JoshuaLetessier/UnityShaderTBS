@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class Competence : CharacterAction
+public abstract class Competence : EntityAction
 {
-
     protected Entity _entity;
+
+    public Entity Entity { get => _entity; set => _entity = value; }
 
     public abstract string Name { get; } 
     public abstract int Cost { get; }
@@ -13,7 +14,7 @@ public abstract class Competence : CharacterAction
     public abstract int Cooldown { get; } 
     public int CurrentCooldown { get; private set; }
 
-    Competence(Entity entity)
+    public Competence(Entity entity)
     {
         _entity = entity;
     }

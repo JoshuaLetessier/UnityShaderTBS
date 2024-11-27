@@ -15,12 +15,7 @@ public class Entity : MonoBehaviour
     private Team _team;
     public Team Team { get => _team; set => _team = value; }
 
-    public Entity(int health, int maxHealth, List<Competence> competences)
-    {
-        this._health = health;
-        this._maxHealth = maxHealth;
-        this._competences = competences;
-    }
+    public List<Competence> Competences { get => _competences; }
 
     public void Start()
     {
@@ -30,6 +25,11 @@ public class Entity : MonoBehaviour
             _competences.Add(AbilityMapper.map[str]());
         }
         _health = _maxHealth;
+
+        foreach (Competence competence in _competences)
+        {
+            competence.Entity = this;
+        }
     }
 
     public void Update() {
@@ -78,16 +78,32 @@ public class Entity : MonoBehaviour
         return _health <= 0;
     }
 
-    /*public void UseCompetence(Competence competence, Entity entityTarget)
-    {
-        competence.Apply(entityTarget);
-        competence.StartCooldown();
-    }*/
 
-    public void SelectCompetence(Competence competence)
+
+    public void SelectAction(Competence competence)
     {
         _team.State = PlayerTeamState.PREPARING_ACTION;
         competence.Prepare();
+    }
+
+    public void Select()
+    {
+        GetComponentInChildren<MeshRenderer>().material.color = Color.green;
+    }
+
+    public void HoverSelect()
+    {
+        GetComponentInChildren<MeshRenderer>().material.color = Color.cyan;
+    }
+
+    public void Deselect()
+    {
+        GetComponentInChildren<MeshRenderer>().material.color = Color.white;
+    }
+
+    public void OnActionDone()
+    {
+        _team.OnEntityTurnDone();
     }
 
     public void UpdateCooldowns()
@@ -97,11 +113,6 @@ public class Entity : MonoBehaviour
         {
             competence.ReduceCooldown();
         }
-    }
-
-    public List<Competence> GetCompetence()
-    {
-        return _competences;
     }
 
     public bool IsSameTeam(Entity other)

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class CharacterAction
+public abstract class EntityAction : MonoBehaviour
 {
     abstract public void Prepare();
 

@@ -43,7 +43,7 @@ public class UseCompetence : MonoBehaviour
     {
         if(_toggleList.Count > 0 && _selectEntity._isSelecting == false)
         {
-            List<Competence> competences = _showCompetenceMenu._entity.GetCompetence();
+            List<Competence> competences = _showCompetenceMenu._entity.Competences;
             for (int i = 0; i < _toggleList.Count; i++)
             {
                 if (DisbaleInteraction(_toggleList[i], competences[i]))
