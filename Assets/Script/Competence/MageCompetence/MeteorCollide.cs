@@ -11,23 +11,7 @@ public class MeteorCollide : MonoBehaviour
     {
         if (other.CompareTag("Ground"))
         {
-            gameObject.transform.GetChild(0).gameObject.SetActive(true);
-            StartCoroutine(WaitExplosion());
+            Destroy(gameObject);
         }
     }
-
-    IEnumerator WaitExplosion()
-    {
-        yield return new WaitForSeconds(1.0f);
-        Destroy(gameObject);
-    }
-
-
-    //private void OnDestroyGameObject()
-    //{
-    //    Gradient gradient = new Gradient();
-    //    Color color = gradient.Evaluate(0.0f);
-
-    //    //_visualEffect.SetGradient("BrightColor", new Gradient());
-    //}
 }

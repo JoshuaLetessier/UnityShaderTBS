@@ -146,8 +146,6 @@ public class OrbMeteorCompetence : Competence
                 _targetPosition.x - 2, _targetPosition.x + 2), _targetPosition.y, Random.Range(_targetPosition.z - 2, _targetPosition.z + 2)
             );
             meteor.transform.position = Vector3.MoveTowards(meteor.transform.position, _targetPosition, 0.1f);
-            meteor.transform.Rotate(Vector3.up, 100 * Time.deltaTime);
-
         }
     }
 

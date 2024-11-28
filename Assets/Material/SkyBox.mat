@@ -47,7 +47,7 @@ Material:
     - _AlphaToMask: 0
     - _Blend: 0
     - _CastShadows: 1
-    - _CloudDensity: 0.1
+    - _CloudDensity: 0.2
     - _CloudScale: 300
     - _CloudsAlpha: 1.99
     - _Cull: 2
@@ -61,7 +61,7 @@ Material:
     - _ZWrite: 1
     - _ZWriteControl: 1
     m_Colors:
-    - _CloudColor: {r: 0.11758632, g: 0.13717069, b: 0.16981131, a: 0.8627451}
+    - _CloudColor: {r: 0.16641505, g: 0.19384612, b: 0.23773581, a: 0.8627451}
     - _CloudSpeed: {r: 0.01, g: 0, b: 0, a: 0}
     - _DistordSpeed: {r: 0.05, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
