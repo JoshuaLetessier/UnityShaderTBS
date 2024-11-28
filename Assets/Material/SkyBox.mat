@@ -17,13 +17,18 @@ Material:
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: -1
-  stringTagMap: {}
+  m_CustomRenderQueue: 2000
+  stringTagMap:
+    RenderType: Opaque
   disabledShaderPasses: []
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _SampleTexture2D_41d8be420d064ff88e22e9bfbc132602_Texture_1_Texture2D:
+        m_Texture: {fileID: 2800000, guid: 564b67e2be1832c4d92840b01fc98088, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -38,16 +43,27 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _CloudDensity: 1
-    - _CloudScale: 120
-    - _CloudsAlpha: 1
-    - _DistordScale: 60
+    - _AlphaClip: 0
+    - _AlphaToMask: 0
+    - _Blend: 0
+    - _CastShadows: 1
+    - _CloudDensity: 0.1
+    - _CloudScale: 300
+    - _CloudsAlpha: 1.99
+    - _Cull: 2
+    - _DistordScale: 120
+    - _DstBlend: 0
     - _QueueControl: 0
     - _QueueOffset: 0
+    - _SrcBlend: 1
+    - _Surface: 0
+    - _ZTest: 4
+    - _ZWrite: 1
+    - _ZWriteControl: 1
     m_Colors:
-    - _CloudColor: {r: 1, g: 1, b: 1, a: 1}
-    - _CloudSpeed: {r: 0.1, g: 0, b: 0, a: 0}
-    - _DistordSpeed: {r: 0.1, g: 0, b: 0, a: 0}
+    - _CloudColor: {r: 0.11758632, g: 0.13717069, b: 0.16981131, a: 0.8627451}
+    - _CloudSpeed: {r: 0.01, g: 0, b: 0, a: 0}
+    - _DistordSpeed: {r: 0.05, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &2131646159580040092
 MonoBehaviour:

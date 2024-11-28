@@ -49,6 +49,7 @@ public class OrbMeteorCompetence : Competence
     IEnumerator WaitAnimation()
     {
         yield return new WaitForSeconds(1.3f);
+        _Orb.transform.GetComponent<Animator>().enabled = false;
     }
 
     private void CreateMeteor()
@@ -120,11 +121,12 @@ public class OrbMeteorCompetence : Competence
         while (elapsedTime < duration)
         {
             MeteorsFall(target);
+           
             elapsedTime += Time.deltaTime;
             yield return null;
         }
-
         Destroy(_Orb);
+
 
         target.TakeDamage(Damage * _nbMeteor);
 
@@ -144,6 +146,8 @@ public class OrbMeteorCompetence : Competence
                 _targetPosition.x - 2, _targetPosition.x + 2), _targetPosition.y, Random.Range(_targetPosition.z - 2, _targetPosition.z + 2)
             );
             meteor.transform.position = Vector3.MoveTowards(meteor.transform.position, _targetPosition, 0.1f);
+            meteor.transform.Rotate(Vector3.up, 100 * Time.deltaTime);
+
         }
     }
 

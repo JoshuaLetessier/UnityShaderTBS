@@ -9,10 +9,17 @@ public class MeteorCollide : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Entity") || other.CompareTag("Ground"))
+        if (other.CompareTag("Ground"))
         {
-            Destroy(gameObject);
+            gameObject.transform.GetChild(0).gameObject.SetActive(true);
+            StartCoroutine(WaitExplosion());
         }
+    }
+
+    IEnumerator WaitExplosion()
+    {
+        yield return new WaitForSeconds(1.0f);
+        Destroy(gameObject);
     }
 
 

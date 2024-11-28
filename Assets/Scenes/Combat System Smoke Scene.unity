@@ -20,13 +20,13 @@ RenderSettings:
   m_FogDensity: 0.12
   m_LinearFogStart: -29.67
   m_LinearFogEnd: 194.23
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientSkyColor: {r: 0.55858314, g: 0.5967127, b: 0.78113204, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
-  m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_AmbientMode: 3
+  m_SubtractiveShadowColor: {r: 0.5608472, g: 0.63387185, b: 0.81886786, a: 1}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 8a12354ecc4e7ad4ca4bc8a62318f880, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -976,10 +976,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 925046490980163396, guid: d1bf4d88d533d3242a3d751c74672b32,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.315094
+      objectReference: {fileID: 0}
+    - target: {fileID: 1113920585469121246, guid: d1bf4d88d533d3242a3d751c74672b32,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.50001526
+      objectReference: {fileID: 0}
     - target: {fileID: 1320918990637474980, guid: d1bf4d88d533d3242a3d751c74672b32,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.29799652
+      value: 0.29800415
       objectReference: {fileID: 0}
     - target: {fileID: 2417883682624738561, guid: d1bf4d88d533d3242a3d751c74672b32,
         type: 3}
@@ -1031,6 +1041,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3986839791206804227, guid: d1bf4d88d533d3242a3d751c74672b32,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.14440918
+      objectReference: {fileID: 0}
     - target: {fileID: 4004480585537119130, guid: d1bf4d88d533d3242a3d751c74672b32,
         type: 3}
       propertyPath: m_Camera
@@ -1044,12 +1059,37 @@ PrefabInstance:
     - target: {fileID: 4085749582493030920, guid: d1bf4d88d533d3242a3d751c74672b32,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.38800812
+      value: 0.38801575
+      objectReference: {fileID: 0}
+    - target: {fileID: 4388406996940024389, guid: d1bf4d88d533d3242a3d751c74672b32,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.11300659
+      objectReference: {fileID: 0}
+    - target: {fileID: 5520420966018479330, guid: d1bf4d88d533d3242a3d751c74672b32,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.11300659
       objectReference: {fileID: 0}
     - target: {fileID: 5529232321837145148, guid: d1bf4d88d533d3242a3d751c74672b32,
         type: 3}
       propertyPath: m_Name
       value: CanvasManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 5529232321837145148, guid: d1bf4d88d533d3242a3d751c74672b32,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5671354475598953929, guid: d1bf4d88d533d3242a3d751c74672b32,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.11300659
+      objectReference: {fileID: 0}
+    - target: {fileID: 7782103467417060827, guid: d1bf4d88d533d3242a3d751c74672b32,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -0.11300659
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1141,6 +1181,7 @@ GameObject:
   - component: {fileID: 1637252660}
   - component: {fileID: 1637252659}
   - component: {fileID: 1637252661}
+  - component: {fileID: 1637252662}
   m_Layer: 0
   m_Name: CombatZone
   m_TagString: Untagged
@@ -1207,6 +1248,24 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 15, y: 5, z: 15}
   m_Center: {x: 0, y: 2, z: 0}
+--- !u!1183024399 &1637252662
+LookAtConstraint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1637252658}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Weight: 1
+  m_RotationAtRest: {x: 0, y: 0, z: 0}
+  m_RotationOffset: {x: 0, y: 0, z: 0}
+  m_Roll: 0
+  m_WorldUpObject: {fileID: 0}
+  m_UseUpObject: 0
+  m_Active: 0
+  m_IsLocked: 0
+  m_Sources: []
 --- !u!114 &1772992216 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5443162101160887868, guid: b010951ac5c0d0244a8dcde5e4af2ac8,
