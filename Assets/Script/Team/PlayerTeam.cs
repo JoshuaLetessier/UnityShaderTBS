@@ -63,7 +63,7 @@ class PlayerTeam : Team
             _hoveredEntity.HoverSelect();
         } else if (_hoveredEntity != hoveredEntity)
         {
-            _hoveredEntity.Deselect();
+            _hoveredEntity?.Deselect();
             _hoveredEntity = null;
         }
     }

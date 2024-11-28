@@ -6,28 +6,25 @@ using UnityEngine;
 
 public class OrbMeteorCompetence : Competence
 {
-
-    public override string Name { get => "OrbMeteorCompetence"; }
+    public override string Name { get => "OrbMeteor"; }
     public override int Cost { get => 0; }
     public override int Damage { get => 10; }
     public override int Cooldown { get => 0; }
 
+    [SerializeField] GameObject _OrbPrefab;
+    [SerializeField] GameObject _MeteorPrefab;
+
     private GameObject _Orb;
-
-    private List<GameObject> _meteors;
-    private List<bool> _isShooting;
-
-    MonoBehaviour _linkedMB;
+    public List<GameObject> _Meteors;
 
     Vector3 _targetPosition;
 
     private Entity _target;
+    private int _nbMeteor;
 
     public OrbMeteorCompetence(Entity entity) : base(entity)
     {
-        _meteors = new List<GameObject>();
-        _isShooting = new List<bool>();
-        _linkedMB = entity.GetComponent<MonoBehaviour>();
+        _Meteors = new List<GameObject>();
     }
 
     public override void Prepare()
@@ -38,55 +35,116 @@ public class OrbMeteorCompetence : Competence
 
     public override void Execute()
     {
-        _Orb = Instantiate(Resources.Load("MageCompetences/Orb"), _target.transform.position, Quaternion.identity) as GameObject;
+        _Orb = Instantiate(_OrbPrefab, new Vector3(0,2,0), Quaternion.identity);
+
+        StartCoroutine(WaitAnimation());
+        _Orb.transform.GetComponent<Animator>().SetBool("StopCast", true);
+        //_Orb.transform.GetComponent<Animator>().enabled = false;
         CreateMeteor();
+
         _targetPosition = _target.transform.position;
-        _linkedMB.StartCoroutine(WaitForFall(_target));
+        StartCoroutine(WaitForRotation(_target));
+    }
+
+    IEnumerator WaitAnimation()
+    {
+        yield return new WaitForSeconds(1.3f);
     }
 
     private void CreateMeteor()
     {
+        // Vérifie les références nécessaires
+        if (_MeteorPrefab == null || _Orb == null)
+        {
+            Debug.LogError("MeteorPrefab or Orb is null");
+            return;
+        }
+
+        // Initialise les météores s'ils ne le sont pas déjà
+        if (_Meteors == null)
+            _Meteors = new List<GameObject>();
+
         int randomNumberOfMeteor = Random.Range(5, 15);
+        _nbMeteor = randomNumberOfMeteor;
         for (int i = 0; i < randomNumberOfMeteor; i++)
         {
-            //Instantiate the meteor
-            //Set the position aroud the Orb with a random offset
-            _meteors.Add(Instantiate(Resources.Load("MageCompetences/Meteor"), _Orb.transform.position + new Vector3(Random.Range(-5, 5), 0, Random.Range(-5, 5)), Quaternion.identity) as GameObject);
-            //set the parent of the meteor to the target
-            _meteors[i].transform.parent = _Orb.transform;
+            // Génère une position aléatoire autour de l'orb
+            Vector3 randomOffset;
+            do
+            {
+                randomOffset = new Vector3(Random.Range(-2, 2), Random.Range(-2, 2), Random.Range(-2, 2));
+            } while (randomOffset.magnitude < 1.0f); // Évite une proximité trop proche
+
+            // Instancie et ajoute le météore à la liste
+            GameObject newMeteor = Instantiate(_MeteorPrefab, _Orb.transform.position + randomOffset, Quaternion.identity);
+            newMeteor.transform.parent = _Orb.transform;
+            _Meteors.Add(newMeteor);
         }
+
+        Debug.Log($"{randomNumberOfMeteor} meteors created successfully.");
+    }
+
+
+    IEnumerator WaitForRotation(Entity target)
+    {
+        float duration = 5f; 
+        float elapsedTime = 0f; 
+
+ 
+        while (elapsedTime < duration)
+        {
+            MeteorsRotation(); 
+            elapsedTime += Time.deltaTime; 
+            yield return null; 
+        }
+
+        StartCoroutine(WaitForFall(_target));
     }
 
     private void MeteorsRotation()
     {
         //Rotate aroud the parent gameobject
-        foreach (GameObject meteor in _meteors)
+        foreach (GameObject meteor in _Meteors)
         {
-            meteor.transform.RotateAround(_Orb.transform.position, Vector3.up, Random.Range(-10, 10) * Time.deltaTime);
+            if(meteor != null)
+                meteor.transform.RotateAround(_Orb.transform.position, Vector3.up, 100 * Time.deltaTime);
         }
-    }
-
-    private void MeteorsFall(GameObject meteor, Entity target)
-    {
-        meteor.transform.parent = null;
-
-        //Random direction Around the target
-        Vector3 randomDirection = new Vector3(Random.Range(
-            _targetPosition.x - 5, _targetPosition.x + 5), _targetPosition.y, Random.Range(_targetPosition.z - 5, _targetPosition.z + 5)
-        );
-
-        meteor.transform.position = Vector3.MoveTowards(meteor.transform.position, randomDirection, 0.1f);
     }
 
     IEnumerator WaitForFall(Entity target)
     {
-        foreach (GameObject meteor in _meteors)
-        {   
-            MeteorsRotation();
-            yield return new WaitForSeconds(Random.Range(1, 3));
-            MeteorsFall(meteor, target);
+        float duration = 2f;
+        float elapsedTime = 0f;
+
+
+        while (elapsedTime < duration)
+        {
+            MeteorsFall(target);
+            elapsedTime += Time.deltaTime;
+            yield return null;
         }
+
+        Destroy(_Orb);
+
+        target.TakeDamage(Damage * _nbMeteor);
+
         Exit();
+    }
+
+    private void MeteorsFall(Entity target)
+    {
+        foreach (GameObject meteor in _Meteors)
+        {
+            if (meteor == null)
+                continue;
+            meteor.transform.parent = null;
+
+            //Random direction Around the target
+            Vector3 randomDirection = new Vector3(Random.Range(
+                _targetPosition.x - 2, _targetPosition.x + 2), _targetPosition.y, Random.Range(_targetPosition.z - 2, _targetPosition.z + 2)
+            );
+            meteor.transform.position = Vector3.MoveTowards(meteor.transform.position, _targetPosition, 0.1f);
+        }
     }
 
     public override void Exit()

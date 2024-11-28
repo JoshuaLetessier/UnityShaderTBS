@@ -5,18 +5,16 @@ using UnityEngine.VFX;
 
 public class MeteorCollide : MonoBehaviour
 {
-
-    OrbMeteorCompetence _orbMeteorCompetence;
     VisualEffect _visualEffect;
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Entity")
+        if (other.CompareTag("Entity") || other.CompareTag("Ground"))
         {
-            other.gameObject.GetComponent<Entity>().TakeDamage(_orbMeteorCompetence.Damage);
             Destroy(gameObject);
         }
     }
+
 
     //private void OnDestroyGameObject()
     //{
