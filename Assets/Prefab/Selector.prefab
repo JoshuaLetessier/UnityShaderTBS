@@ -70,6 +70,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _selectionCircle: {fileID: 9209311416320729239}
   _selectionArrow: {fileID: 7373927090121333589}
+  _defaultOpacity: 0
 --- !u!1 &2742459081659566570
 GameObject:
   m_ObjectHideFlags: 0
@@ -216,12 +217,12 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 7a15c41b035d2634eab3cab6362ffe6f,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.5
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7a15c41b035d2634eab3cab6362ffe6f,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.5
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7a15c41b035d2634eab3cab6362ffe6f,
         type: 3}
@@ -236,7 +237,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 7a15c41b035d2634eab3cab6362ffe6f,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 7a15c41b035d2634eab3cab6362ffe6f,
         type: 3}

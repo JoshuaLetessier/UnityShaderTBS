@@ -46,11 +46,11 @@ Material:
     - _Gradient_Shift: -0.96
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Saturation: 1.35
+    - _Saturation: 1.03
     - _Speed: 0.3
     - _Wind_Intensity: 10
     m_Colors:
-    - _TopColor: {r: 0.19660017, g: 0.8867924, b: 0.43114257, a: 0}
+    - _TopColor: {r: 0.6863887, g: 0.8862745, b: 0.1960784, a: 0}
     - _Wind_Direction: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
 --- !u!114 &8324216860365750799
