@@ -9,6 +9,8 @@ public class Entity : MonoBehaviour
     [SerializeField] public int _maxHealth;
     [SerializeField] public int _mana;
     [SerializeField] public int _maxMana;
+    [SerializeField] GameObject _heart;
+    [SerializeField] Material _heartMaterial;
     [SerializeField] List<Competence> _competences;
 
     private Team _team;
@@ -24,11 +26,16 @@ public class Entity : MonoBehaviour
         {
             competence.Entity = this;
         }
+
+        _heart.GetComponent<Renderer>().material = _heartMaterial;
+        _heart.GetComponent<Renderer>().material.SetFloat("_Lenght", 0.36f);
     }
 
     public void TakeDamage(int damage)
     {
         _health -= damage;
+        float result = _health / (float)_maxHealth;
+        _heart.GetComponent<Renderer>().material.SetFloat("_Health", result);
         if (_health <= 0)
         {
             Destroy(gameObject);

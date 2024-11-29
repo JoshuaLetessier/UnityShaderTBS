@@ -5,6 +5,7 @@ using UnityEngine;
 public class AnimatorMiddleware : MonoBehaviour
 {
     [SerializeField] GameObject _entity;
+    [SerializeField] Animator _bookAnimator;
 
     public void BackToPosition()
     {
@@ -25,5 +26,15 @@ public class AnimatorMiddleware : MonoBehaviour
     public void TriggerEstoc()
     {
         _entity.GetComponent<Slash>().TriggerEstoc();
+    }
+
+    public void OpenBook()
+    {
+        _bookAnimator.SetTrigger("Open");
+    }
+
+    public void CloseBook()
+    {
+        _bookAnimator.SetTrigger("Close");
     }
 }

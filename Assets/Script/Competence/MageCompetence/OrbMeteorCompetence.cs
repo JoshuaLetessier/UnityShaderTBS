@@ -15,6 +15,8 @@ public class OrbMeteorCompetence : Competence
     [SerializeField] GameObject _OrbPrefab;
     [SerializeField] GameObject _MeteorPrefab;
     [SerializeField] CinemachineVirtualCamera _camera;
+    [SerializeField] Animator _animator;
+    [SerializeField] GameObject _castCameraSpot;
 
     private GameObject _Orb;
     public List<GameObject> _Meteors;
@@ -37,11 +39,25 @@ public class OrbMeteorCompetence : Competence
 
     public override void Execute()
     {
-        _Orb = Instantiate(_OrbPrefab, new Vector3(0,2,0), Quaternion.identity);
+        _animator.SetTrigger("CastSpell");
+
         //create a camera to follow the orb
         _camera = Instantiate(_camera, new Vector3(0, 0, 0), Quaternion.identity);
-      
+
         _camera.Priority = 30;
+        _camera.LookAt = transform;
+        _camera.transform.position = _castCameraSpot.transform.position;
+
+        StartCoroutine(CastSpellWithDelay());
+    }
+
+    IEnumerator CastSpellWithDelay()
+    {
+        yield return new WaitForSeconds(1.5f);
+
+        _Orb = Instantiate(_OrbPrefab, new Vector3(0, 2, 0), Quaternion.identity);
+        
+        
         //_camera.transform.LookAt(_Orb.transform);
         _camera.LookAt = _Orb.transform;
         _camera.Follow = _Orb.transform;
