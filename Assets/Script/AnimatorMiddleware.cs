@@ -8,6 +8,7 @@ public class AnimatorMiddleware : MonoBehaviour
 
     public void BackToPosition()
     {
+        print("triggered");
         _entity.GetComponent<Slash>().BackToOriginalPos();
     }
 
@@ -19,5 +20,10 @@ public class AnimatorMiddleware : MonoBehaviour
     public void TriggerThunder()
     {
         _entity.GetComponent<Battlecry>().TriggerThunder();
+    }
+
+    public void TriggerEstoc()
+    {
+        _entity.GetComponent<Slash>().TriggerEstoc();
     }
 }

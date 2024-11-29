@@ -14,8 +14,10 @@ public class Battlecry : Competence
 
     public Battlecry(Entity entity) : base(entity) { }
 
-    [SerializeField] Animator _animator;
     [SerializeField] UnityEvent uEvent;
+    [SerializeField] Animator _animator;
+    [SerializeField] Material _crystalMaterial;
+    [SerializeField] Renderer _blade;
 
     Vector3 _basePos;
     Quaternion _baseRotation;
@@ -29,6 +31,7 @@ public class Battlecry : Competence
     {
         _animator.SetTrigger("Battlecry");
         StartCoroutine(Wait());
+        GetComponent<Slash>().Enlight();
     }
 
     IEnumerator Wait()
@@ -45,5 +48,6 @@ public class Battlecry : Competence
     public void TriggerThunder()
     {
         uEvent.Invoke();
+        _blade.material = _crystalMaterial;
     }
 }

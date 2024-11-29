@@ -1,3 +1,5 @@
+using Cinemachine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -14,8 +16,16 @@ public class Slash : Competence
 
     public Slash(Entity entity) : base(entity) { }
 
+    [SerializeField] UnityEvent SlashUEvent;
+    [SerializeField] UnityEvent LightenedSlashUEvent;
+    [SerializeField] UnityEvent EstocUEvent;
     [SerializeField] Animator _animator;
-    [SerializeField] UnityEvent uEvent;
+    [SerializeField] Material _baseMaterial;
+    [SerializeField] Renderer _blade;
+    [SerializeField] CinemachineVirtualCamera _virtualCamera;
+    [SerializeField] ParticleSystem _thunderBuffEmitter;
+
+    bool _isLightened = false;
 
     Vector3 _basePos;
     Quaternion _baseRotation;
@@ -30,9 +40,17 @@ public class Slash : Competence
     {
         _basePos = transform.position;
         _baseRotation = transform.rotation;
+        _virtualCamera.Priority = 20;
         transform.LookAt(_target.transform.position);
         GoTo(_target.transform.position);
-        _animator.SetTrigger("Slash");
+        if(false == _isLightened)
+        {
+            _animator.SetTrigger("Slash");
+        }
+        else
+        {
+            _animator.SetTrigger("LightenedSlash");
+        }
     }
 
     public override void Exit()
@@ -72,6 +90,12 @@ public class Slash : Competence
     public void BackToOriginalPos()
     {
         StartCoroutine(BackToPosCoroutine());
+        if(_isLightened)
+        {
+            _isLightened = false;
+            _blade.material = _baseMaterial;
+            _thunderBuffEmitter.Stop();
+        }
     }
 
     IEnumerator BackToPosCoroutine()
@@ -90,12 +114,26 @@ public class Slash : Competence
         transform.position = _basePos;
         transform.rotation = _baseRotation;
         _animator.SetTrigger("AtDestination");
+        _virtualCamera.Priority = 0;
 
         Exit();
     }
 
     public void TriggerSlash()
     {
-        uEvent.Invoke();
+        if (_isLightened)
+            LightenedSlashUEvent.Invoke();
+        else
+            SlashUEvent.Invoke();
+    }
+
+    public void Enlight()
+    {
+        _isLightened = true;
+    }
+
+    public void TriggerEstoc()
+    {
+        EstocUEvent.Invoke();
     }
 }
