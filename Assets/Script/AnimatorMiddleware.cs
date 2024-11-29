@@ -37,4 +37,19 @@ public class AnimatorMiddleware : MonoBehaviour
     {
         _bookAnimator.SetTrigger("Close");
     }
+
+    public void SpawnBow()
+    {
+        _entity.GetComponent<MagicBow>().SpawnBow();
+    }
+
+    public void DespawnBow()
+    {
+        _entity.GetComponent<MagicBow>().DespawnBow();
+    }
+    
+    public void SpawnArrow()
+    {
+        _entity.GetComponent<MagicBow>().SpawnArrow();
+    }
 }
