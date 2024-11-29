@@ -14,7 +14,7 @@ public class Sequencer
     List<Link> _sequence;
     int _currentLinkID;
     MonoBehaviour _linkedMB;
-    bool _isRuning;
+    bool _isRunning;
 
 
 
@@ -23,12 +23,12 @@ public class Sequencer
         _sequence = sequence;
         _currentLinkID = 0;
         _linkedMB = linkedMB;
-        _isRuning = false;
+        _isRunning = false;
     }
 
     public void StartSequence()
     {
-        _isRuning = true;
+        _isRunning = true;
         _currentLinkID = 0;
         NextLink();
     }
@@ -39,7 +39,7 @@ public class Sequencer
 
         if(_currentLinkID == _sequence.Count -1)
         {
-            _isRuning = false;
+            _isRunning = false;
             return;
         }
 
