@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -13,6 +14,7 @@ public class OrbMeteorCompetence : Competence
 
     [SerializeField] GameObject _OrbPrefab;
     [SerializeField] GameObject _MeteorPrefab;
+    [SerializeField] CinemachineVirtualCamera _camera;
 
     private GameObject _Orb;
     public List<GameObject> _Meteors;
@@ -20,7 +22,7 @@ public class OrbMeteorCompetence : Competence
     Vector3 _targetPosition;
 
     private Entity _target;
-    private int _nbMeteor;
+    private int _nbMeteor; 
 
     public OrbMeteorCompetence(Entity entity) : base(entity)
     {
@@ -36,6 +38,16 @@ public class OrbMeteorCompetence : Competence
     public override void Execute()
     {
         _Orb = Instantiate(_OrbPrefab, new Vector3(0,2,0), Quaternion.identity);
+        //create a camera to follow the orb
+        _camera = Instantiate(_camera, new Vector3(0, 0, 0), Quaternion.identity);
+      
+        _camera.Priority = 30;
+        //_camera.transform.LookAt(_Orb.transform);
+        _camera.LookAt = _Orb.transform;
+        _camera.Follow = _Orb.transform;
+        _camera.transform.position = new Vector3(_Orb.transform.position.x, _Orb.transform.position.y + 25, _Orb.transform.position.z - 10);
+        _camera.transform.rotation = Quaternion.Euler(45, 0, 0);
+
 
         StartCoroutine(WaitAnimation());
         _Orb.transform.GetComponent<Animator>().SetBool("StopCast", true);
@@ -88,7 +100,7 @@ public class OrbMeteorCompetence : Competence
 
     IEnumerator WaitForRotation(Entity target)
     {
-        float duration = 5f; 
+        float duration = 3f; 
         float elapsedTime = 0f; 
 
  
@@ -129,6 +141,8 @@ public class OrbMeteorCompetence : Competence
 
 
         target.TakeDamage(Damage * _nbMeteor);
+
+        _camera.Priority = -1;
 
         Exit();
     }
