@@ -914,7 +914,7 @@ GameObject:
   - component: {fileID: 196018082229107899}
   - component: {fileID: 8793157609281272946}
   m_Layer: 0
-  m_Name: Mage
+  m_Name: Wizard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -998,7 +998,7 @@ MonoBehaviour:
   _competences:
   - {fileID: 1995954029949144270}
   - {fileID: 8793157609281272946}
-  - {fileID: 196018082229107899}
+  - {fileID: 8793157609281272946}
   _selectionIndicator: {fileID: 8837782848357697170}
 --- !u!114 &1995954029949144270
 MonoBehaviour:
